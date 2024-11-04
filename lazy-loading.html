@@ -1,0 +1,155 @@
+<html lang="zh-TW"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>懶加載示例</title>
+    <style>
+        body {
+            padding-top: 56px;
+            /* 根據實際 navbar 高度調整 */
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="navbar-placeholder">
+<!-- navbar.html -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">JS 套件介紹</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="aos.html">AOS 動畫</a></li>
+                <li class="nav-item"><a class="nav-link" href="text-to-speech.html">文字轉語音</a></li>
+                <li class="nav-item"><a class="nav-link" href="lottie.html">Lottie 動畫</a></li>
+                <li class="nav-item"><a class="nav-link" href="chart.html">Chart.js 圖表</a></li>
+                <li class="nav-item"><a class="nav-link" href="lazy-loading.html">圖片懶加載</a></li>
+                <li class="nav-item"><a class="nav-link" href="leaflet.html">Leaflet 地圖</a></li>
+                <li class="nav-item"><a class="nav-link" href="fullcalendar.html">日曆效果</a></li>
+                <li class="nav-item"><a class="nav-link" href="sweetalert.html">美化網頁的彈窗效果</a></li>
+                <li class="nav-item"><a class="nav-link" href="Swiper.html">輪播效果</a></li>
+                <li class="nav-item"><a class="nav-link active" href="select2.html">下拉選單效果</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</div>
+    <script src="navbar.js"></script>
+
+    <div class="container mt-3">
+        <h2>懶加載圖片示例</h2>
+        <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank">Intersection Observer API 官網</a></p>
+        
+        <h3>簡單範例</h3>
+        <p>以下是使用 Intersection Observer 進行懶加載的簡單範例：</p>
+        <pre><code>
+// 假設我們有一張圖片，僅當圖片進入視窗範圍時才載入
+const img = document.querySelector('.lazy');
+const observer = new IntersectionObserver(entries =&gt; {
+    entries.forEach(entry =&gt; {
+        if (entry.isIntersecting) {
+            entry.target.src = entry.target.dataset.src;
+            observer.unobserve(entry.target); // 停止觀察該圖片
+        }
+    });
+});
+observer.observe(img);
+        </code></pre>
+
+        <h3>範例展示</h3>
+        <div class="row">
+            <div class="col-4 mb-3">
+                <img data-src="http://fakeimg.pl/300x250/?text=Sample" class="lazy img-fluid" alt="Sample Image" src="http://fakeimg.pl/300x250/?text=Sample">
+            </div>
+        </div>
+
+        <h3>完整範例程式碼</h3>
+        <pre><code>
+// 使用 JavaScript 動態生成圖片
+function generateImages(imageCount) {
+    const container = document.getElementById('image-container');
+    for (let i = 1; i &lt;= imageCount; i++) {
+        const col = document.createElement('div');
+        col.className = 'col-4 mb-3';
+
+        const img = document.createElement('img');
+        img.dataset.src = `http://fakeimg.pl/300x250/?text=${i}`;
+        img.className = 'lazy img-fluid';
+        img.alt = `圖片 ${i}`;
+
+        col.appendChild(img);
+        container.appendChild(col);
+    }
+}
+
+// 初始化懶加載
+function initLazyLoading() {
+    const images = document.querySelectorAll('.lazy');
+    const observer = new IntersectionObserver(entries =&gt; {
+        entries.forEach(entry =&gt; {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                observer.unobserve(img); // 停止觀察該圖片
+            }
+        });
+    });
+    images.forEach(image =&gt; observer.observe(image));
+}
+
+// 生成 99 張圖片並初始化懶加載
+generateImages(99);
+initLazyLoading();
+        </code></pre>
+
+        <h3>效果展示</h3>
+        <div class="row" id="image-container">
+            <!-- 動態生成的圖片將插入此處 -->
+        <div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=1" class="lazy img-fluid" alt="圖片 1" src="http://fakeimg.pl/300x250/?text=1"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=2" class="lazy img-fluid" alt="圖片 2" src="http://fakeimg.pl/300x250/?text=2"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=3" class="lazy img-fluid" alt="圖片 3" src="http://fakeimg.pl/300x250/?text=3"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=4" class="lazy img-fluid" alt="圖片 4" src="http://fakeimg.pl/300x250/?text=4"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=5" class="lazy img-fluid" alt="圖片 5" src="http://fakeimg.pl/300x250/?text=5"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=6" class="lazy img-fluid" alt="圖片 6" src="http://fakeimg.pl/300x250/?text=6"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=7" class="lazy img-fluid" alt="圖片 7" src="http://fakeimg.pl/300x250/?text=7"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=8" class="lazy img-fluid" alt="圖片 8" src="http://fakeimg.pl/300x250/?text=8"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=9" class="lazy img-fluid" alt="圖片 9" src="http://fakeimg.pl/300x250/?text=9"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=10" class="lazy img-fluid" alt="圖片 10" src="http://fakeimg.pl/300x250/?text=10"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=11" class="lazy img-fluid" alt="圖片 11" src="http://fakeimg.pl/300x250/?text=11"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=12" class="lazy img-fluid" alt="圖片 12" src="http://fakeimg.pl/300x250/?text=12"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=13" class="lazy img-fluid" alt="圖片 13" src="http://fakeimg.pl/300x250/?text=13"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=14" class="lazy img-fluid" alt="圖片 14" src="http://fakeimg.pl/300x250/?text=14"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=15" class="lazy img-fluid" alt="圖片 15" src="http://fakeimg.pl/300x250/?text=15"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=16" class="lazy img-fluid" alt="圖片 16" src="http://fakeimg.pl/300x250/?text=16"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=17" class="lazy img-fluid" alt="圖片 17" src="http://fakeimg.pl/300x250/?text=17"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=18" class="lazy img-fluid" alt="圖片 18" src="http://fakeimg.pl/300x250/?text=18"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=19" class="lazy img-fluid" alt="圖片 19" src="http://fakeimg.pl/300x250/?text=19"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=20" class="lazy img-fluid" alt="圖片 20" src="http://fakeimg.pl/300x250/?text=20"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=21" class="lazy img-fluid" alt="圖片 21" src="http://fakeimg.pl/300x250/?text=21"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=22" class="lazy img-fluid" alt="圖片 22" src="http://fakeimg.pl/300x250/?text=22"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=23" class="lazy img-fluid" alt="圖片 23" src="http://fakeimg.pl/300x250/?text=23"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=24" class="lazy img-fluid" alt="圖片 24" src="http://fakeimg.pl/300x250/?text=24"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=25" class="lazy img-fluid" alt="圖片 25" src="http://fakeimg.pl/300x250/?text=25"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=26" class="lazy img-fluid" alt="圖片 26" src="http://fakeimg.pl/300x250/?text=26"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=27" class="lazy img-fluid" alt="圖片 27" src="http://fakeimg.pl/300x250/?text=27"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=28" class="lazy img-fluid" alt="圖片 28" src="http://fakeimg.pl/300x250/?text=28"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=29" class="lazy img-fluid" alt="圖片 29" src="http://fakeimg.pl/300x250/?text=29"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=30" class="lazy img-fluid" alt="圖片 30" src="http://fakeimg.pl/300x250/?text=30"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=31" class="lazy img-fluid" alt="圖片 31" src="http://fakeimg.pl/300x250/?text=31"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=32" class="lazy img-fluid" alt="圖片 32" src="http://fakeimg.pl/300x250/?text=32"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=33" class="lazy img-fluid" alt="圖片 33" src="http://fakeimg.pl/300x250/?text=33"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=34" class="lazy img-fluid" alt="圖片 34" src="http://fakeimg.pl/300x250/?text=34"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=35" class="lazy img-fluid" alt="圖片 35" src="http://fakeimg.pl/300x250/?text=35"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=36" class="lazy img-fluid" alt="圖片 36" src="http://fakeimg.pl/300x250/?text=36"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=37" class="lazy img-fluid" alt="圖片 37" src="http://fakeimg.pl/300x250/?text=37"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=38" class="lazy img-fluid" alt="圖片 38" src="http://fakeimg.pl/300x250/?text=38"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=39" class="lazy img-fluid" alt="圖片 39" src="http://fakeimg.pl/300x250/?text=39"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=40" class="lazy img-fluid" alt="圖片 40" src="http://fakeimg.pl/300x250/?text=40"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=41" class="lazy img-fluid" alt="圖片 41" src="http://fakeimg.pl/300x250/?text=41"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=42" class="lazy img-fluid" alt="圖片 42" src="http://fakeimg.pl/300x250/?text=42"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=43" class="lazy img-fluid" alt="圖片 43" src="http://fakeimg.pl/300x250/?text=43"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=44" class="lazy img-fluid" alt="圖片 44" src="http://fakeimg.pl/300x250/?text=44"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=45" class="lazy img-fluid" alt="圖片 45" src="http://fakeimg.pl/300x250/?text=45"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=46" class="lazy img-fluid" alt="圖片 46" src="http://fakeimg.pl/300x250/?text=46"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=47" class="lazy img-fluid" alt="圖片 47" src="http://fakeimg.pl/300x250/?text=47"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=48" class="lazy img-fluid" alt="圖片 48" src="http://fakeimg.pl/300x250/?text=48"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=49" class="lazy img-fluid" alt="圖片 49" src="http://fakeimg.pl/300x250/?text=49"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=50" class="lazy img-fluid" alt="圖片 50" src="http://fakeimg.pl/300x250/?text=50"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=51" class="lazy img-fluid" alt="圖片 51" src="http://fakeimg.pl/300x250/?text=51"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=52" class="lazy img-fluid" alt="圖片 52" src="http://fakeimg.pl/300x250/?text=52"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=53" class="lazy img-fluid" alt="圖片 53" src="http://fakeimg.pl/300x250/?text=53"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=54" class="lazy img-fluid" alt="圖片 54" src="http://fakeimg.pl/300x250/?text=54"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=55" class="lazy img-fluid" alt="圖片 55" src="http://fakeimg.pl/300x250/?text=55"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=56" class="lazy img-fluid" alt="圖片 56" src="http://fakeimg.pl/300x250/?text=56"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=57" class="lazy img-fluid" alt="圖片 57" src="http://fakeimg.pl/300x250/?text=57"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=58" class="lazy img-fluid" alt="圖片 58" src="http://fakeimg.pl/300x250/?text=58"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=59" class="lazy img-fluid" alt="圖片 59" src="http://fakeimg.pl/300x250/?text=59"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=60" class="lazy img-fluid" alt="圖片 60" src="http://fakeimg.pl/300x250/?text=60"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=61" class="lazy img-fluid" alt="圖片 61" src="http://fakeimg.pl/300x250/?text=61"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=62" class="lazy img-fluid" alt="圖片 62" src="http://fakeimg.pl/300x250/?text=62"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=63" class="lazy img-fluid" alt="圖片 63" src="http://fakeimg.pl/300x250/?text=63"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=64" class="lazy img-fluid" alt="圖片 64" src="http://fakeimg.pl/300x250/?text=64"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=65" class="lazy img-fluid" alt="圖片 65" src="http://fakeimg.pl/300x250/?text=65"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=66" class="lazy img-fluid" alt="圖片 66" src="http://fakeimg.pl/300x250/?text=66"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=67" class="lazy img-fluid" alt="圖片 67" src="http://fakeimg.pl/300x250/?text=67"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=68" class="lazy img-fluid" alt="圖片 68" src="http://fakeimg.pl/300x250/?text=68"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=69" class="lazy img-fluid" alt="圖片 69" src="http://fakeimg.pl/300x250/?text=69"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=70" class="lazy img-fluid" alt="圖片 70" src="http://fakeimg.pl/300x250/?text=70"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=71" class="lazy img-fluid" alt="圖片 71" src="http://fakeimg.pl/300x250/?text=71"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=72" class="lazy img-fluid" alt="圖片 72" src="http://fakeimg.pl/300x250/?text=72"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=73" class="lazy img-fluid" alt="圖片 73" src="http://fakeimg.pl/300x250/?text=73"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=74" class="lazy img-fluid" alt="圖片 74" src="http://fakeimg.pl/300x250/?text=74"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=75" class="lazy img-fluid" alt="圖片 75" src="http://fakeimg.pl/300x250/?text=75"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=76" class="lazy img-fluid" alt="圖片 76" src="http://fakeimg.pl/300x250/?text=76"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=77" class="lazy img-fluid" alt="圖片 77" src="http://fakeimg.pl/300x250/?text=77"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=78" class="lazy img-fluid" alt="圖片 78" src="http://fakeimg.pl/300x250/?text=78"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=79" class="lazy img-fluid" alt="圖片 79" src="http://fakeimg.pl/300x250/?text=79"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=80" class="lazy img-fluid" alt="圖片 80" src="http://fakeimg.pl/300x250/?text=80"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=81" class="lazy img-fluid" alt="圖片 81" src="http://fakeimg.pl/300x250/?text=81"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=82" class="lazy img-fluid" alt="圖片 82" src="http://fakeimg.pl/300x250/?text=82"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=83" class="lazy img-fluid" alt="圖片 83" src="http://fakeimg.pl/300x250/?text=83"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=84" class="lazy img-fluid" alt="圖片 84" src="http://fakeimg.pl/300x250/?text=84"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=85" class="lazy img-fluid" alt="圖片 85" src="http://fakeimg.pl/300x250/?text=85"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=86" class="lazy img-fluid" alt="圖片 86" src="http://fakeimg.pl/300x250/?text=86"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=87" class="lazy img-fluid" alt="圖片 87" src="http://fakeimg.pl/300x250/?text=87"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=88" class="lazy img-fluid" alt="圖片 88" src="http://fakeimg.pl/300x250/?text=88"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=89" class="lazy img-fluid" alt="圖片 89" src="http://fakeimg.pl/300x250/?text=89"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=90" class="lazy img-fluid" alt="圖片 90" src="http://fakeimg.pl/300x250/?text=90"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=91" class="lazy img-fluid" alt="圖片 91" src="http://fakeimg.pl/300x250/?text=91"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=92" class="lazy img-fluid" alt="圖片 92" src="http://fakeimg.pl/300x250/?text=92"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=93" class="lazy img-fluid" alt="圖片 93" src="http://fakeimg.pl/300x250/?text=93"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=94" class="lazy img-fluid" alt="圖片 94" src="http://fakeimg.pl/300x250/?text=94"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=95" class="lazy img-fluid" alt="圖片 95" src="http://fakeimg.pl/300x250/?text=95"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=96" class="lazy img-fluid" alt="圖片 96" src="http://fakeimg.pl/300x250/?text=96"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=97" class="lazy img-fluid" alt="圖片 97" src="http://fakeimg.pl/300x250/?text=97"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=98" class="lazy img-fluid" alt="圖片 98" src="http://fakeimg.pl/300x250/?text=98"></div><div class="col-4 mb-3"><img data-src="http://fakeimg.pl/300x250/?text=99" class="lazy img-fluid" alt="圖片 99" src="http://fakeimg.pl/300x250/?text=99"></div></div>
+    </div>
+
+    <script>
+        // 使用 JavaScript 動態生成圖片
+        function generateImages(imageCount) {
+            const container = document.getElementById('image-container');
+            for (let i = 1; i <= imageCount; i++) {
+                const col = document.createElement('div');
+                col.className = 'col-4 mb-3';
+
+                const img = document.createElement('img');
+                img.dataset.src = `http://fakeimg.pl/300x250/?text=${i}`;
+                img.className = 'lazy img-fluid';
+                img.alt = `圖片 ${i}`;
+
+                col.appendChild(img);
+                container.appendChild(col);
+            }
+        }
+
+        // 初始化懶加載
+        function initLazyLoading() {
+            const images = document.querySelectorAll('.lazy');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        observer.unobserve(img); // 停止觀察該圖片
+                    }
+                });
+            });
+            images.forEach(image => observer.observe(image));
+        }
+
+        // 生成 99 張圖片並初始化懶加載
+        generateImages(99);
+        initLazyLoading();
+    </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+
+</body></html>
